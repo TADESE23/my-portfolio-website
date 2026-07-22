@@ -176,7 +176,7 @@ const Home: React.FC = () => {
             <a href="https://github.com/TADESE23" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-200">
               <FaGithub className="w-6 h-6" />
             </a>
-            <a href="https://www.linkedin.com/in/tadese-mesfin" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-200">
+            <a href="https://www.linkedin.com/in/tadese-mesfin-mesfin-045412398" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-200">
               <FaLinkedin className="w-6 h-6" />
             </a>
             <a href="https://t.me/Mtade23" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-200">

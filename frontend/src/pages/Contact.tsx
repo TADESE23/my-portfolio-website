@@ -48,7 +48,7 @@ const Contact: React.FC = () => {
 
   const socialLinks = [
     { name: 'GitHub', url: 'https://github.com/TADESE23', icon: <FaGithub className="w-5 h-5" /> },
-    { name: 'LinkedIn', url: 'https://www.linkedin.com/in/tadese-mesfin', icon: <FaLinkedin className="w-5 h-5" /> },
+    { name: 'LinkedIn', url: 'https://www.linkedin.com/in/tadese-mesfin-mesfin-045412398', icon: <FaLinkedin className="w-5 h-5" /> },
     { name: 'Telegram', url: 'https://t.me/Mtade23', icon: <FaTelegramPlane className="w-5 h-5" /> }
   ];
 

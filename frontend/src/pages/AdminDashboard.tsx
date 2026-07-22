@@ -408,19 +408,27 @@ const AdminDashboard: React.FC = () => {
   const handleSocialSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      let submitData = { ...socialForm };
+      if (submitData.url && !/^https?:\/\//i.test(submitData.url)) {
+        submitData.url = 'https://' + submitData.url;
+      }
+
       if (editingType === 'create') {
-        const res = await api.post('/resume/sociallinks/', socialForm);
+        const res = await api.post('/resume/sociallinks/', submitData);
         setSocials(prev => [...prev, res.data]);
         triggerAlert('success', 'Social link created!');
       } else {
-        const res = await api.patch(`/resume/sociallinks/${isEditing}/`, socialForm);
+        const res = await api.patch(`/resume/sociallinks/${isEditing}/`, submitData);
         setSocials(prev => prev.map(soc => soc.id === isEditing ? res.data : soc));
         triggerAlert('success', 'Social link updated!');
       }
       setIsEditing(null);
       setSocialForm({ platform: '', url: '', icon: '' });
-    } catch (err) {
-      triggerAlert('error', 'Failed to save social link.');
+    } catch (err: any) {
+      const errorMsg = err.response?.data 
+        ? (typeof err.response.data === 'object' ? JSON.stringify(err.response.data) : err.response.data)
+        : 'Failed to save social link.';
+      triggerAlert('error', `Error: ${errorMsg}`);
     }
   };
 
