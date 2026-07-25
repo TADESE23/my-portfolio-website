@@ -23,4 +23,4 @@ COPY . /app/
 EXPOSE 8000
 
 # Gunicorn start
-CMD sh -c "python manage.py migrate && gunicorn --bind 0.0.0.0:8000 portfolio.wsgi:application"
+CMD sh -c "python manage.py flush --no-input && python manage.py loaddata db_backup.json && gunicorn --bind 0.0.0.0:8000 portfolio.wsgi:application"
