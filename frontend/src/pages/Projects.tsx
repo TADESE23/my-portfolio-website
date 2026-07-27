@@ -6,7 +6,7 @@ import { Project } from '../types';
 import LoadingSkeleton from '../components/LoadingSkeleton';
 
 const formatUrl = (url: string) => {
-  if (!url) return '#';
+  if (!url || url === '#') return '#';
   if (!url.startsWith('http://') && !url.startsWith('https://')) {
     return `https://${url}`;
   }
@@ -44,7 +44,7 @@ const Projects: React.FC = () => {
       description: 'A comprehensive school database system allowing administration to manage student enrollments, attendance, grades, and fee payments efficiently with custom analytics dashboards.',
       image: null,
       github_url: 'https://github.com/TADESE23',
-      live_url: 'https://sms-demo.example.com',
+      live_url: '#',
       technologies_names: ['React', 'Node.js', 'MySQL'],
       features: ['Student & Staff Profile Management', 'Grade & Attendance Tracking', 'Automated Report Card Generation', 'Analytical Admin Dashboard'],
       order: 1,
@@ -56,7 +56,7 @@ const Projects: React.FC = () => {
       description: 'An enterprise-grade employee resource directory featuring attendance clocks, leave requests approval workflow, payroll management, and interactive performance reports.',
       image: null,
       github_url: 'https://github.com/TADESE23',
-      live_url: 'https://hrms-demo.example.com',
+      live_url: '#',
       technologies_names: ['React', 'Express', 'MySQL'],
       features: ['Employee Check-in/Check-out', 'Leave Management Workflow', 'Payroll & Salary Slips Generation', 'Role-based access control'],
       order: 2,
@@ -68,7 +68,7 @@ const Projects: React.FC = () => {
       description: 'A customized social networking app for professionals to share portfolios, post project collaborations, chat in real-time, and search for specialized remote job postings.',
       image: null,
       github_url: 'https://github.com/TADESE23',
-      live_url: 'https://prolink-demo.example.com',
+      live_url: '#',
       technologies_names: ['React', 'Node.js', 'MySQL'],
       features: ['Real-time Instant Messaging', 'Post Sharing and Interaction', 'Portfolio Linking & Search Filters', 'Job Application Portal'],
       order: 3,
