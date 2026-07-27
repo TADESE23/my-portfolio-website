@@ -113,9 +113,7 @@ const AdminDashboard: React.FC = () => {
     if (profileImageFile) formData.append('profile_image', profileImageFile);
 
     try {
-      const res = await api.patch(`/resume/profile/${profile.id}/`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
+      const res = await api.patch(`/resume/profile/${profile.id}/`, formData);
       setProfile(res.data);
       triggerAlert('success', 'Profile information updated successfully!');
       setCvFile(null);
@@ -172,11 +170,11 @@ const AdminDashboard: React.FC = () => {
 
     try {
       if (editingType === 'create') {
-        const res = await api.post('/projects/', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+        const res = await api.post('/projects/', formData);
         setProjects(prev => [...prev, res.data]);
         triggerAlert('success', 'Project created successfully!');
       } else {
-        const res = await api.patch(`/projects/${isEditing}/`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+        const res = await api.patch(`/projects/${isEditing}/`, formData);
         setProjects(prev => prev.map(p => p.id === isEditing ? res.data : p));
         triggerAlert('success', 'Project updated successfully!');
       }

@@ -5,6 +5,14 @@ import api from '../services/api';
 import { Project } from '../types';
 import LoadingSkeleton from '../components/LoadingSkeleton';
 
+const formatUrl = (url: string) => {
+  if (!url) return '#';
+  if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    return `https://${url}`;
+  }
+  return url;
+};
+
 const Projects: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
@@ -232,7 +240,7 @@ const Projects: React.FC = () => {
 
                     <div className="flex items-center gap-2">
                       <a
-                        href={project.github_url}
+                        href={formatUrl(project.github_url)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slatebg-border dark:hover:bg-slate-700 text-slatefg-muted dark:text-white transition-colors"
@@ -241,7 +249,7 @@ const Projects: React.FC = () => {
                         <FaGithub />
                       </a>
                       <a
-                        href={project.live_url}
+                        href={formatUrl(project.live_url)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="p-2 rounded-xl bg-primary hover:bg-secondary text-white transition-colors"
@@ -351,7 +359,7 @@ const Projects: React.FC = () => {
 
               <div className="flex gap-4 mt-8 pt-6 border-t border-slate-100 dark:border-slatebg-border/60">
                 <a
-                  href={selectedProject.github_url}
+                  href={formatUrl(selectedProject.github_url)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 flex-1 py-3 bg-slate-100 dark:bg-slatebg-border dark:hover:bg-slate-700 hover:bg-slate-200 text-slate-800 dark:text-white font-bold rounded-2xl transition-all"
@@ -359,7 +367,7 @@ const Projects: React.FC = () => {
                   <FaGithub /> Source Code
                 </a>
                 <a
-                  href={selectedProject.live_url}
+                  href={formatUrl(selectedProject.live_url)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 flex-1 py-3 bg-primary hover:bg-secondary text-white font-bold rounded-2xl transition-all"
