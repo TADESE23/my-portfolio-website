@@ -250,8 +250,8 @@ const About: React.FC = () => {
                 <div className="relative bg-white dark:bg-slatebg-card p-6 rounded-2xl border border-slate-200/50 dark:border-slatebg-border/30 shadow-sm">
                   <div className="absolute -left-[33px] top-7 w-4 h-4 rounded-full bg-secondary border-4 border-slate-50 dark:border-slatebg-dark" />
                   <span className="text-xs font-bold text-secondary bg-secondary/10 px-3 py-1 rounded-full font-inter">2023 - 2023</span>
-                  <h4 className="text-lg font-bold text-slate-800 dark:text-white mt-3">Full Stack Developer Intern</h4>
-                  <p className="text-sm font-semibold text-slatefg-muted dark:text-slatefg-dark/80">Local Tech Startup</p>
+                  <h4 className="text-lg font-bold text-slate-800 dark:text-white mt-3">Full Stack Developer</h4>
+                  <p className="text-sm font-semibold text-slatefg-muted dark:text-slatefg-dark/80">University of Gondar</p>
                   <p className="text-xs text-slatefg-muted dark:text-slatefg-dark/70 mt-2 font-inter leading-relaxed">
                     Designed reactive layout modules, developed server-side logic in Node.js, and wrote documentation schemas.
                   </p>

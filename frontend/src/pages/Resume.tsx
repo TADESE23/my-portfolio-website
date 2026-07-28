@@ -52,9 +52,9 @@ const Resume: React.FC = () => {
   const localExp: Experience[] = experience.length > 0 ? experience : [
     {
       id: 1,
-      company: 'Local Tech Startup',
-      position: 'Full Stack Developer (Internship)',
-      location: 'Addis Ababa',
+      company: 'University of Gondar',
+      position: 'Full Stack Developer',
+      location: 'Gondar',
       start_date: '2023-07-01',
       end_date: '2023-10-31',
       description: 'Developed and optimized frontend interfaces using React and Tailwind CSS. Built REST API endpoints in Node.js/Express. Wrote unit tests and automated builds via GitHub Actions.',
