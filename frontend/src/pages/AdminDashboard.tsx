@@ -37,7 +37,7 @@ const AdminDashboard: React.FC = () => {
   const [skillForm, setSkillForm] = useState({ name: '', percentage: 80, category: 'frontend', icon: '' });
   const [certForm, setCertForm] = useState({ name: '', issuer: '', date: '', description: '', url: '' });
   const [blogForm, setBlogForm] = useState({ title: '', content: '', category: '', is_published: true });
-  const [profileForm, setProfileForm] = useState({ name: '', title: '', about: '', email: '', phone: '', location: '', mission: '', vision: '', goals: '', achievements: '' });
+  const [profileForm, setProfileForm] = useState({ name: '', title: '', about: '', email: '', phone: '', location: '', mission: '', vision: '', goals: '', achievements: '', profile_image: '' });
   const [eduForm, setEduForm] = useState({ institution: '', degree: '', field_of_study: '', start_date: '', end_date: '', current: false, description: '' });
   const [expForm, setExpForm] = useState({ company: '', position: '', location: '', start_date: '', end_date: '', current: false, description: '' });
   const [socialForm, setSocialForm] = useState({ platform: '', url: '', icon: '' });
@@ -102,7 +102,8 @@ const AdminDashboard: React.FC = () => {
     
     const formData = new FormData();
     Object.entries(profileForm).forEach(([key, value]) => {
-      if (key !== 'profile_image' && key !== 'cv' && value !== null) {
+      if (key !== 'cv' && value !== null) {
+        if (key === 'profile_image' && profileImageFile) return;
         formData.append(key, value as string);
       }
     });
@@ -622,20 +623,25 @@ const AdminDashboard: React.FC = () => {
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t border-slate-100 dark:border-slatebg-border">
-                      {/* File uploads */}
-                      <div className="space-y-2">
+                      {/* File uploads & URL inputs */}
+                      <div className="space-y-3">
                         <label className="text-xs font-semibold text-slatefg-muted dark:text-slatefg-dark/80 font-inter flex items-center gap-1.5"><FaUpload /> Profile Avatar Image</label>
                         <div className="flex items-center gap-4">
                           <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-primary/40 bg-slate-100 flex items-center justify-center flex-shrink-0">
                             {profileImageFile ? (
                               <img src={URL.createObjectURL(profileImageFile)} alt="Preview" className="w-full h-full object-cover" />
+                            ) : profileForm.profile_image ? (
+                              <img src={getImageUrl(profileForm.profile_image)} alt="Current Avatar" className="w-full h-full object-cover" />
                             ) : profile?.profile_image ? (
                               <img src={getImageUrl(profile.profile_image)} alt="Current Avatar" className="w-full h-full object-cover" />
                             ) : (
                               <span className="text-2xl">👨‍💻</span>
                             )}
                           </div>
-                          <input type="file" accept="image/*" onChange={(e) => setProfileImageFile(e.target.files ? e.target.files[0] : null)} className="w-full text-xs text-slatefg-muted" />
+                          <div className="space-y-2 flex-1">
+                            <input type="file" accept="image/*" onChange={(e) => setProfileImageFile(e.target.files ? e.target.files[0] : null)} className="w-full text-xs text-slatefg-muted" />
+                            <input type="url" placeholder="Or enter direct Image URL (e.g. https://github.com/TADESE23.png)" value={profileForm.profile_image || ''} onChange={(e) => setProfileForm(p => ({ ...p, profile_image: e.target.value }))} className="w-full px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slatebg-border bg-slate-50 dark:bg-slatebg-card text-xs text-slate-800 dark:text-white font-inter" />
+                          </div>
                         </div>
                       </div>
                       <div className="space-y-2">
