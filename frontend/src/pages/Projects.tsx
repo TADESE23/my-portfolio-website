@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaSearch, FaGithub, FaExternalLinkAlt, FaListUl, FaTimes } from 'react-icons/fa';
-import api from '../services/api';
+import api, { getImageUrl } from '../services/api';
 import { Project } from '../types';
 import LoadingSkeleton from '../components/LoadingSkeleton';
 
@@ -190,7 +190,7 @@ const Projects: React.FC = () => {
                 <div className="relative h-48 bg-gradient-to-tr from-slate-100 to-slate-200 dark:from-slatebg-border dark:to-slate-800 flex items-center justify-center overflow-hidden group">
                   {project.image ? (
                     <img
-                      src={project.image.startsWith('http') ? project.image : `http://127.0.0.1:8000${project.image}`}
+                      src={getImageUrl(project.image)}
                       alt={project.name}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />

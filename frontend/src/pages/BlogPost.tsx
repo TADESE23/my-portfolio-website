@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import { FaArrowLeft, FaCalendarAlt, FaEye, FaFolderOpen } from 'react-icons/fa';
-import api from '../services/api';
+import api, { getImageUrl } from '../services/api';
 import { Blog } from '../types';
 import PageLoader from '../components/PageLoader';
 
@@ -117,7 +117,7 @@ const BlogPost: React.FC = () => {
           {post.image && (
             <div className="w-full max-h-[350px] overflow-hidden rounded-2xl mb-8 shadow-sm">
               <img
-                src={post.image.startsWith('http') ? post.image : `http://127.0.0.1:8000${post.image}`}
+                src={getImageUrl(post.image)}
                 alt={post.title}
                 className="w-full h-full object-cover"
               />

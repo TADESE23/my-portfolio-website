@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { FaDownload, FaArrowRight, FaGithub, FaLinkedin, FaTelegramPlane } from 'react-icons/fa';
 import ParticlesBackground from '../components/ParticlesBackground';
 import { fadeUp, staggerContainer, floatingIcon } from '../animations/framer';
-import api from '../services/api';
+import api, { getImageUrl } from '../services/api';
 import { fetchGithubStats } from '../services/github';
 
 // Custom Typing Hook for high-performance React typing effect
@@ -205,7 +205,7 @@ const Home: React.FC = () => {
             <div className="absolute inset-6 rounded-full overflow-hidden border-2 border-primary/30 z-20 shadow-2xl bg-gradient-to-tr from-slate-100 to-slate-200 dark:from-slatebg-card dark:to-slate-800 flex items-center justify-center">
               {profileImage ? (
                 <img
-                  src={profileImage.startsWith('http') ? profileImage : `http://127.0.0.1:8000${profileImage}`}
+                  src={getImageUrl(profileImage)}
                   alt="Tadese Mesfin"
                   className="w-full h-full object-cover"
                 />

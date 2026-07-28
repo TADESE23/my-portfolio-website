@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { FaSearch, FaCalendarAlt, FaEye, FaBookOpen } from 'react-icons/fa';
-import api from '../services/api';
+import api, { getImageUrl } from '../services/api';
 import { Blog, Category } from '../types';
 import LoadingSkeleton from '../components/LoadingSkeleton';
 
@@ -163,7 +163,7 @@ const BlogPage: React.FC = () => {
                 <div className="h-48 relative bg-gradient-to-r from-primary/20 via-secondary/10 to-accent/20 dark:from-slatebg-border dark:to-slate-800 flex items-center justify-center">
                   {blog.image ? (
                     <img
-                      src={blog.image.startsWith('http') ? blog.image : `http://127.0.0.1:8000${blog.image}`}
+                      src={getImageUrl(blog.image)}
                       alt={blog.title}
                       className="w-full h-full object-cover"
                     />
