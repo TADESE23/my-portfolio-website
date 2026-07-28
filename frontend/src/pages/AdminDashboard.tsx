@@ -5,7 +5,7 @@ import {
   FaEnvelope, FaUser, FaPlus, FaEdit, FaTrash, FaCheckCircle, 
   FaRegEnvelopeOpen, FaUpload, FaEye 
 } from 'react-icons/fa';
-import api from '../services/api';
+import api, { getImageUrl } from '../services/api';
 import { Project, Skill, Certificate, Blog, Message, Profile, Category, Education, Experience, SocialLink } from '../types';
 
 const AdminDashboard: React.FC = () => {
@@ -97,10 +97,8 @@ const AdminDashboard: React.FC = () => {
     loadAllData();
   }, []);
 
-  // --- Profile CRUD Operations ---
   const handleProfileSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!profile) return;
     
     const formData = new FormData();
     Object.entries(profileForm).forEach(([key, value]) => {
@@ -113,7 +111,12 @@ const AdminDashboard: React.FC = () => {
     if (profileImageFile) formData.append('profile_image', profileImageFile);
 
     try {
-      const res = await api.patch(`/resume/profile/${profile.id}/`, formData);
+      let res;
+      if (profile && profile.id) {
+        res = await api.patch(`/resume/profile/${profile.id}/`, formData);
+      } else {
+        res = await api.post('/resume/profile/', formData);
+      }
       setProfile(res.data);
       triggerAlert('success', 'Profile information updated successfully!');
       setCvFile(null);
@@ -620,13 +623,24 @@ const AdminDashboard: React.FC = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t border-slate-100 dark:border-slatebg-border">
                       {/* File uploads */}
-                      <div className="space-y-1.5">
+                      <div className="space-y-2">
                         <label className="text-xs font-semibold text-slatefg-muted dark:text-slatefg-dark/80 font-inter flex items-center gap-1.5"><FaUpload /> Profile Avatar Image</label>
-                        <input type="file" accept="image/*" onChange={(e) => setProfileImageFile(e.target.files ? e.target.files[0] : null)} className="w-full text-xs text-slatefg-muted" />
+                        <div className="flex items-center gap-4">
+                          <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-primary/40 bg-slate-100 flex items-center justify-center flex-shrink-0">
+                            {profileImageFile ? (
+                              <img src={URL.createObjectURL(profileImageFile)} alt="Preview" className="w-full h-full object-cover" />
+                            ) : profile?.profile_image ? (
+                              <img src={getImageUrl(profile.profile_image)} alt="Current Avatar" className="w-full h-full object-cover" />
+                            ) : (
+                              <span className="text-2xl">👨‍💻</span>
+                            )}
+                          </div>
+                          <input type="file" accept="image/*" onChange={(e) => setProfileImageFile(e.target.files ? e.target.files[0] : null)} className="w-full text-xs text-slatefg-muted" />
+                        </div>
                       </div>
-                      <div className="space-y-1.5">
+                      <div className="space-y-2">
                         <label className="text-xs font-semibold text-slatefg-muted dark:text-slatefg-dark/80 font-inter flex items-center gap-1.5"><FaUpload /> Active Resume PDF</label>
-                        <input type="file" accept=".pdf" onChange={(e) => setCvFile(e.target.files ? e.target.files[0] : null)} className="w-full text-xs text-slatefg-muted" />
+                        <input type="file" accept=".pdf" onChange={(e) => setCvFile(e.target.files ? e.target.files[0] : null)} className="w-full text-xs text-slatefg-muted pt-4" />
                       </div>
                     </div>
 
