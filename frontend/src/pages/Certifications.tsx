@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaCertificate, FaExternalLinkAlt, FaCalendarAlt } from 'react-icons/fa';
-import api from '../services/api';
+import api, { getImageUrl } from '../services/api';
 import { Certificate } from '../types';
 import LoadingSkeleton from '../components/LoadingSkeleton';
 
@@ -108,9 +108,17 @@ const Certifications: React.FC = () => {
             >
               {/* Left icon branding */}
               <div className="flex-shrink-0">
-                <div className="p-4 rounded-2xl bg-primary/10 text-primary dark:bg-primary/20 flex items-center justify-center">
-                  <FaCertificate className="w-8 h-8" />
-                </div>
+                {cert.image ? (
+                  <img
+                    src={getImageUrl(cert.image)}
+                    alt={cert.name}
+                    className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-2xl shadow-sm border border-slate-200 dark:border-slatebg-border/30"
+                  />
+                ) : (
+                  <div className="p-4 sm:p-5 rounded-2xl bg-primary/10 text-primary dark:bg-primary/20 flex items-center justify-center">
+                    <FaCertificate className="w-8 h-8 sm:w-10 sm:h-10" />
+                  </div>
+                )}
               </div>
 
               {/* Right content details */}
