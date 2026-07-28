@@ -9,6 +9,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Load environment variables
 dotenv.load_dotenv(os.path.join(BASE_DIR, '.env'))
 
+# Validate CLOUDINARY_URL format to prevent Cloudinary module startup crash
+raw_cloudinary = os.environ.get('CLOUDINARY_URL', '').strip()
+if raw_cloudinary and not raw_cloudinary.startswith('cloudinary://'):
+    os.environ.pop('CLOUDINARY_URL', None)
+
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-default-secret-key-tadese-mesfin')
 
 DEBUG = os.environ.get('DEBUG', 'True').lower() in ('true', '1', 't')
@@ -121,8 +126,8 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Cloudinary Configuration for Media Storage
-CLOUDINARY_URL = os.environ.get('CLOUDINARY_URL')
-if CLOUDINARY_URL:
+CLOUDINARY_URL = os.environ.get('CLOUDINARY_URL', '').strip()
+if CLOUDINARY_URL and CLOUDINARY_URL.startswith('cloudinary://'):
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
     STORAGES = {
         "default": {
