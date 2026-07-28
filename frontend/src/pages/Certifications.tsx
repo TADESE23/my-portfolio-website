@@ -26,21 +26,39 @@ const Certifications: React.FC = () => {
   const localCerts: Certificate[] = certs.length > 0 ? certs : [
     {
       id: 1,
-      name: 'Meta Front-End Developer Professional Certificate',
-      issuer: 'Meta (via Coursera)',
-      date: '2024-02-15',
+      name: '5 Million Ethiopian Coders Initiative',
+      issuer: 'Programming',
+      date: '2024-01-01',
       image: null,
-      description: 'Comprehensive 9-course program covering JavaScript, React, UI/UX, version control with Git, and frontend testing methodologies.',
-      url: 'https://coursera.org/verify/meta-frontend'
+      description: 'Completed the foundational programming training as part of the 5 Million Ethiopian Coders initiative.',
+      url: ''
     },
     {
       id: 2,
-      name: 'DeepLearning.AI TensorFlow Developer Specialization',
-      issuer: 'DeepLearning.AI (via Coursera)',
-      date: '2024-05-20',
+      name: 'Overview of AI Completion',
+      issuer: 'Huawei',
+      date: '2024-03-10',
       image: null,
-      description: 'Specialization covering neural network construction, computer vision, natural language processing, and time-series predictions in TensorFlow.',
-      url: 'https://coursera.org/verify/tensorflow-developer'
+      description: 'Completed the overview of Artificial Intelligence course provided by Huawei.',
+      url: ''
+    },
+    {
+      id: 3,
+      name: 'Cybersecurity and Networking Fundamentals',
+      issuer: 'KG CYBER (Kibir Gasha Cyber PLC)',
+      date: '2024-05-15',
+      image: null,
+      description: 'Successfully completed the two-month Cybersecurity and Networking Fundamentals Training Program aligned with the ISC2 Certified in Cybersecurity (CC) domains.',
+      url: ''
+    },
+    {
+      id: 4,
+      name: 'Student Startup Competition - Top Winner',
+      issuer: 'University of Gondar',
+      date: '2025-11-20',
+      image: null,
+      description: 'In recognition of outstanding achievement as one of the Top Winners in the Student Startup Competition, held at the University of Gondar.',
+      url: ''
     }
   ];
 
