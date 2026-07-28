@@ -83,6 +83,7 @@ const Home: React.FC = () => {
 
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [cvUrl, setCvUrl] = useState<string | null>(null);
+  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     // Fetch stats and profile details from local APIs
@@ -203,11 +204,12 @@ const Home: React.FC = () => {
             
             {/* Profile Avatar Frame */}
             <div className="absolute inset-6 rounded-full overflow-hidden border-2 border-primary/30 z-20 shadow-2xl bg-gradient-to-tr from-slate-100 to-slate-200 dark:from-slatebg-card dark:to-slate-800 flex items-center justify-center">
-              {profileImage ? (
+              {profileImage && !imageError ? (
                 <img
                   src={getImageUrl(profileImage)}
                   alt="Tadese Mesfin"
                   className="w-full h-full object-cover"
+                  onError={() => setImageError(true)}
                 />
               ) : (
                 <div className="text-center p-4">
