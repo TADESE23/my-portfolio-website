@@ -2,8 +2,8 @@ import axios from 'axios';
 
 export const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://my-portfolio-backend-g9px.onrender.com/api';
 
-export const getImageUrl = (path: string | null) => {
-  if (!path) return '';
+export const getImageUrl = (path: string | null | undefined, fallback: string = '/profile.jpg') => {
+  if (!path || path.trim() === '') return fallback;
   if (path.startsWith('http')) return path;
   const baseUrl = API_BASE.replace(/\/api\/?$/, '');
   return `${baseUrl}${path.startsWith('/') ? '' : '/'}${path}`;

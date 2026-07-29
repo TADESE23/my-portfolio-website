@@ -106,15 +106,16 @@ const Home: React.FC = () => {
 
         if (profRes.data && profRes.data.length > 0) {
           const profile = profRes.data[0];
-          if (profile.profile_image) {
-            setProfileImage(profile.profile_image);
+          const imgPath = profile.profile_image_url || profile.profile_image;
+          if (imgPath) {
+            setProfileImage(imgPath);
           }
-          if (profile.cv) {
-            setCvUrl(profile.cv);
+          if (profile.cv_url || profile.cv) {
+            setCvUrl(profile.cv_url || profile.cv);
           }
         }
       } catch (err) {
-        console.warn('API connection failed, falling back to mock counts');
+        console.warn('API connection failed, falling back to default values');
       }
     };
     loadHomeData();
@@ -204,19 +205,17 @@ const Home: React.FC = () => {
             
             {/* Profile Avatar Frame */}
             <div className="absolute inset-6 rounded-full overflow-hidden border-2 border-primary/30 z-20 shadow-2xl bg-gradient-to-tr from-slate-100 to-slate-200 dark:from-slatebg-card dark:to-slate-800 flex items-center justify-center">
-              {profileImage && !imageError ? (
-                <img
-                  src={getImageUrl(profileImage)}
-                  alt="Tadese Mesfin"
-                  className="w-full h-full object-cover"
-                  onError={() => setImageError(true)}
-                />
-              ) : (
-                <div className="text-center p-4">
-                  <span className="text-6xl sm:text-7xl block mb-2">👨‍💻</span>
-                  <span className="text-xs font-bold font-inter text-slatefg-muted">Tadese Mesfin</span>
-                </div>
-              )}
+              <img
+                src={!imageError ? getImageUrl(profileImage, '/profile.jpg') : '/profile.jpg'}
+                alt="Tadese Mesfin"
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  if (!imageError) {
+                    setImageError(true);
+                    (e.target as HTMLImageElement).src = '/profile.jpg';
+                  }
+                }}
+              />
             </div>
           </motion.div>
         </motion.div>

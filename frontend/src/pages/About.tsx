@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaGraduationCap, FaBriefcase, FaAward, FaEye, FaBullseye, FaFlag } from 'react-icons/fa';
 import { fadeUp, staggerContainer, zoomIn } from '../animations/framer';
-import api from '../services/api';
+import api, { getImageUrl } from '../services/api';
 import { Education, Experience, Profile } from '../types';
 
 const About: React.FC = () => {
@@ -38,6 +38,8 @@ const About: React.FC = () => {
     name: 'Tadese Mesfin',
     title: 'Full Stack Developer | AI Enthusiast | Data Science Aspirant',
     about: 'I am a Computer Science graduate passionate about Full Stack Development, Artificial Intelligence, Data Science, and Software Engineering. I enjoy building scalable web applications using React, Django, Node.js, MySQL, PostgreSQL, TensorFlow, and Python. I am currently seeking international Master\'s scholarships in Artificial Intelligence and Data Science.',
+    profile_image: null,
+    profile_image_url: '/profile.jpg',
     mission: 'To build intelligent, high-performance software solutions that bridge the gap between human capabilities and automated machine intelligence.',
     vision: 'To become a pioneering researcher and lead engineering teams in developing ethical, scalable AI applications that solve global challenges.',
     goals: 'Secure an international Master\'s scholarship in AI/Data Science; build impact-driven open-source projects; refine production deployment pipelines.',
@@ -97,12 +99,22 @@ const About: React.FC = () => {
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
-            className="lg:col-span-7 glass-panel p-8 rounded-3xl shadow-sm space-y-6"
+            className="lg:col-span-7 glass-panel p-8 rounded-3xl shadow-sm space-y-6 flex flex-col md:flex-row gap-6 items-start"
           >
-            <h3 className="text-2xl font-bold text-slate-800 dark:text-white">Professional Journey</h3>
-            <p className="text-slatefg-muted dark:text-slatefg-dark/80 leading-relaxed font-inter whitespace-pre-line text-sm sm:text-base">
-              {localProfile.about}
-            </p>
+            <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl overflow-hidden border-2 border-primary/30 shadow-lg flex-shrink-0 bg-slate-100 dark:bg-slate-800">
+              <img
+                src={getImageUrl(localProfile.profile_image_url || localProfile.profile_image, '/profile.jpg')}
+                alt={localProfile.name}
+                className="w-full h-full object-cover"
+                onError={(e) => { (e.target as HTMLImageElement).src = '/profile.jpg'; }}
+              />
+            </div>
+            <div className="space-y-3 flex-1">
+              <h3 className="text-2xl font-bold text-slate-800 dark:text-white">Professional Journey</h3>
+              <p className="text-slatefg-muted dark:text-slatefg-dark/80 leading-relaxed font-inter whitespace-pre-line text-sm sm:text-base">
+                {localProfile.about}
+              </p>
+            </div>
           </motion.div>
 
           <motion.div

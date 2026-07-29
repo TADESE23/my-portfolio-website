@@ -37,7 +37,7 @@ const AdminDashboard: React.FC = () => {
   const [skillForm, setSkillForm] = useState({ name: '', percentage: 80, category: 'frontend', icon: '' });
   const [certForm, setCertForm] = useState({ name: '', issuer: '', date: '', description: '', url: '' });
   const [blogForm, setBlogForm] = useState({ title: '', content: '', category: '', is_published: true });
-  const [profileForm, setProfileForm] = useState({ name: '', title: '', about: '', email: '', phone: '', location: '', mission: '', vision: '', goals: '', achievements: '', profile_image: '' });
+  const [profileForm, setProfileForm] = useState({ name: '', title: '', about: '', email: '', phone: '', location: '', mission: '', vision: '', goals: '', achievements: '', profile_image: '', profile_image_url: '', cv_url: '' });
   const [eduForm, setEduForm] = useState({ institution: '', degree: '', field_of_study: '', start_date: '', end_date: '', current: false, description: '' });
   const [expForm, setExpForm] = useState({ company: '', position: '', location: '', start_date: '', end_date: '', current: false, description: '' });
   const [socialForm, setSocialForm] = useState({ platform: '', url: '', icon: '' });
@@ -102,8 +102,7 @@ const AdminDashboard: React.FC = () => {
     
     const formData = new FormData();
     Object.entries(profileForm).forEach(([key, value]) => {
-      if (key !== 'cv' && value !== null) {
-        if (key === 'profile_image' && profileImageFile) return;
+      if (key !== 'cv' && key !== 'profile_image' && value !== null) {
         formData.append(key, value as string);
       }
     });
@@ -119,11 +118,15 @@ const AdminDashboard: React.FC = () => {
         res = await api.post('/resume/profile/', formData);
       }
       setProfile(res.data);
+      setProfileForm(res.data);
       triggerAlert('success', 'Profile information updated successfully!');
       setCvFile(null);
       setProfileImageFile(null);
-    } catch (err) {
-      triggerAlert('error', 'Failed to update profile.');
+    } catch (err: any) {
+      const errorMsg = err.response?.data
+        ? (typeof err.response.data === 'object' ? JSON.stringify(err.response.data) : err.response.data)
+        : 'Failed to update profile.';
+      triggerAlert('error', `Error: ${errorMsg}`);
     }
   };
 
@@ -623,30 +626,46 @@ const AdminDashboard: React.FC = () => {
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t border-slate-100 dark:border-slatebg-border">
-                      {/* File uploads & URL inputs */}
+                      {/* File uploads & Permanent URL inputs */}
                       <div className="space-y-3">
                         <label className="text-xs font-semibold text-slatefg-muted dark:text-slatefg-dark/80 font-inter flex items-center gap-1.5"><FaUpload /> Profile Avatar Image</label>
                         <div className="flex items-center gap-4">
                           <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-primary/40 bg-slate-100 flex items-center justify-center flex-shrink-0">
                             {profileImageFile ? (
                               <img src={URL.createObjectURL(profileImageFile)} alt="Preview" className="w-full h-full object-cover" />
-                            ) : profileForm.profile_image ? (
-                              <img src={getImageUrl(profileForm.profile_image)} alt="Current Avatar" className="w-full h-full object-cover" />
-                            ) : profile?.profile_image ? (
-                              <img src={getImageUrl(profile.profile_image)} alt="Current Avatar" className="w-full h-full object-cover" />
                             ) : (
-                              <span className="text-2xl">👨‍💻</span>
+                              <img
+                                src={getImageUrl(profileForm.profile_image_url || profileForm.profile_image, '/profile.jpg')}
+                                alt="Current Avatar"
+                                className="w-full h-full object-cover"
+                                onError={(e) => { (e.target as HTMLImageElement).src = '/profile.jpg'; }}
+                              />
                             )}
                           </div>
                           <div className="space-y-2 flex-1">
                             <input type="file" accept="image/*" onChange={(e) => setProfileImageFile(e.target.files ? e.target.files[0] : null)} className="w-full text-xs text-slatefg-muted" />
-                            <input type="url" placeholder="Or enter direct Image URL (e.g. https://github.com/TADESE23.png)" value={profileForm.profile_image || ''} onChange={(e) => setProfileForm(p => ({ ...p, profile_image: e.target.value }))} className="w-full px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slatebg-border bg-slate-50 dark:bg-slatebg-card text-xs text-slate-800 dark:text-white font-inter" />
+                            <input
+                              type="url"
+                              placeholder="Permanent Photo URL (e.g. Imgur, GitHub, Cloudinary)"
+                              value={profileForm.profile_image_url || ''}
+                              onChange={(e) => setProfileForm(p => ({ ...p, profile_image_url: e.target.value }))}
+                              className="w-full px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slatebg-border bg-slate-50 dark:bg-slatebg-card text-xs text-slate-800 dark:text-white font-inter"
+                            />
                           </div>
                         </div>
                       </div>
-                      <div className="space-y-2">
-                        <label className="text-xs font-semibold text-slatefg-muted dark:text-slatefg-dark/80 font-inter flex items-center gap-1.5"><FaUpload /> Active Resume PDF</label>
-                        <input type="file" accept=".pdf" onChange={(e) => setCvFile(e.target.files ? e.target.files[0] : null)} className="w-full text-xs text-slatefg-muted pt-4" />
+                      <div className="space-y-3">
+                        <label className="text-xs font-semibold text-slatefg-muted dark:text-slatefg-dark/80 font-inter flex items-center gap-1.5"><FaUpload /> Active Resume CV</label>
+                        <div className="space-y-2">
+                          <input type="file" accept=".pdf" onChange={(e) => setCvFile(e.target.files ? e.target.files[0] : null)} className="w-full text-xs text-slatefg-muted" />
+                          <input
+                            type="url"
+                            placeholder="Permanent CV PDF URL (e.g. Google Drive, Cloudinary)"
+                            value={profileForm.cv_url || ''}
+                            onChange={(e) => setProfileForm(p => ({ ...p, cv_url: e.target.value }))}
+                            className="w-full px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slatebg-border bg-slate-50 dark:bg-slatebg-card text-xs text-slate-800 dark:text-white font-inter"
+                          />
+                        </div>
                       </div>
                     </div>
 

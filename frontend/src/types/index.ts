@@ -4,7 +4,9 @@ export interface Profile {
   title: string;
   about: string;
   profile_image: string | null;
+  profile_image_url?: string | null;
   cv: string | null;
+  cv_url?: string | null;
   email: string;
   phone: string;
   location: string;
