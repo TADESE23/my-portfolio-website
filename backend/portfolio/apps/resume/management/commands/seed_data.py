@@ -34,6 +34,7 @@ class Command(BaseCommand):
                     "Seeking global scholarships in AI and Data Science to deepen expertise in machine "
                     "learning, neural networks, and distributed computing."
                 ),
+                'profile_image_url': "https://cdn.jsdelivr.net/gh/TADESE23/my-portfolio-website@main/frontend/public/profile.jpg",
                 'email': "tadesemesfin23@gmail.com",
                 'phone': "+251900000000",
                 'location': "Addis Ababa, Ethiopia",

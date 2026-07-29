@@ -81,7 +81,7 @@ const Home: React.FC = () => {
     githubRepos: 0
   });
 
-  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [profileImage, setProfileImage] = useState<string | null>('/profile.jpg');
   const [cvUrl, setCvUrl] = useState<string | null>(null);
   const [imageError, setImageError] = useState(false);
 
