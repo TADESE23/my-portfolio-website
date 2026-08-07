@@ -23,7 +23,7 @@ const Certifications: React.FC = () => {
     fetchCerts();
   }, []);
 
-  const localCerts: Certificate[] = certs.length > 0 ? certs : [
+  const defaultCerts: Certificate[] = [
     {
       id: 1,
       name: '5 Million Ethiopian Coders Initiative',
@@ -62,6 +62,11 @@ const Certifications: React.FC = () => {
     }
   ];
 
+  // Combine fetched certificates with default list, filtering out any duplicates by name
+  const displayCerts: Certificate[] = certs.length > 0
+    ? [...certs, ...defaultCerts.filter(d => !certs.some(c => c.name.toLowerCase() === d.name.toLowerCase()))]
+    : defaultCerts;
+
   return (
     <section className="min-h-screen py-28 bg-slate-50 dark:bg-slatebg-dark transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -96,7 +101,7 @@ const Certifications: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {loading ? (
             <LoadingSkeleton type="card" count={2} />
-          ) : localCerts.map((cert, idx) => (
+          ) : displayCerts.map((cert, idx) => (
             <motion.div
               key={cert.id}
               initial={{ opacity: 0, scale: 0.95 }}
