@@ -212,21 +212,39 @@ class Command(BaseCommand):
 
         # 7. Seed Certifications
         Certificate.objects.get_or_create(
-            name="Meta Front-End Developer Professional Certificate",
-            issuer="Meta (via Coursera)",
+            name="5 Million Ethiopian Coders Initiative",
+            issuer="Programming Basics",
             defaults={
-                'date': date(2024, 2, 15),
-                'description': "Comprehensive 9-course program covering JavaScript, React, UI/UX, version control with Git, and frontend testing methodologies.",
-                'url': "https://coursera.org/verify/meta-frontend"
+                'date': date(2024, 1, 1),
+                'description': "Completed the foundational programming training as part of the 5 Million Ethiopian Coders initiative.",
+                'url': ""
             }
         )
         Certificate.objects.get_or_create(
-            name="DeepLearning.AI TensorFlow Developer",
-            issuer="DeepLearning.AI (via Coursera)",
+            name="Overview of AI Completion",
+            issuer="Huawei",
             defaults={
-                'date': date(2024, 5, 20),
-                'description': "Specialization covering neural network construction, computer vision, natural language processing, and time-series predictions in TensorFlow.",
-                'url': "https://coursera.org/verify/tensorflow-developer"
+                'date': date(2024, 3, 10),
+                'description': "Completed the overview of Artificial Intelligence course provided by Huawei.",
+                'url': ""
+            }
+        )
+        Certificate.objects.get_or_create(
+            name="Cybersecurity and Networking Fundamentals",
+            issuer="KG CYBER (Kibir Gasha Cyber PLC)",
+            defaults={
+                'date': date(2024, 5, 15),
+                'description': "Successfully completed the two-month Cybersecurity and Networking Fundamentals Training Program aligned with the ISC2 Certified in Cybersecurity (CC) domains.",
+                'url': ""
+            }
+        )
+        Certificate.objects.get_or_create(
+            name="Student Startup Competition - Top Winner",
+            issuer="University of Gondar",
+            defaults={
+                'date': date(2025, 11, 20),
+                'description': "In recognition of outstanding achievement as one of the Top Winners in the Student Startup Competition, held at the University of Gondar.",
+                'url': ""
             }
         )
         self.stdout.write(self.style.SUCCESS("Seeded Certifications."))

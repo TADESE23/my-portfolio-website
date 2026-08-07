@@ -27,7 +27,7 @@ const Certifications: React.FC = () => {
     {
       id: 1,
       name: '5 Million Ethiopian Coders Initiative',
-      issuer: 'Programming',
+      issuer: 'Programming Basics',
       date: '2024-01-01',
       image: null,
       description: 'Completed the foundational programming training as part of the 5 Million Ethiopian Coders initiative.',
@@ -88,7 +88,7 @@ const Certifications: React.FC = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="text-slatefg-muted dark:text-slatefg-dark/80 mt-4 text-base font-inter"
           >
-            Professional certifications validating my knowledge in Software Engineering, AI, and Front-End frameworks.
+            Professional certifications validating my expertise in Software Engineering, Programming Basics, AI, Cybersecurity, and Innovation.
           </motion.p>
         </div>
 

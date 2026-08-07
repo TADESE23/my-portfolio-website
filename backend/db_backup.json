@@ -529,24 +529,48 @@
     "model": "resume.certificate",
     "pk": 1,
     "fields": {
-        "name": "Meta Front-End Developer Professional Certificate",
-        "issuer": "Meta (via Coursera)",
-        "date": "2024-02-15",
+        "name": "5 Million Ethiopian Coders Initiative",
+        "issuer": "Programming Basics",
+        "date": "2024-01-01",
         "image": "",
-        "description": "Comprehensive 9-course program covering JavaScript, React, UI/UX, version control with Git, and frontend testing methodologies.",
-        "url": "https://coursera.org/verify/meta-frontend"
+        "description": "Completed the foundational programming training as part of the 5 Million Ethiopian Coders initiative.",
+        "url": ""
+    }
+},
+{
+    "model": "resume.certificate",
+    "pk": 2,
+    "fields": {
+        "name": "Overview of AI Completion",
+        "issuer": "Huawei",
+        "date": "2024-03-10",
+        "image": "",
+        "description": "Completed the overview of Artificial Intelligence course provided by Huawei.",
+        "url": ""
     }
 },
 {
     "model": "resume.certificate",
     "pk": 3,
     "fields": {
-        "name": "DeepLearning.AI TensorFlow Developer",
-        "issuer": "DeepLearning.AI (via Coursera)",
-        "date": "2024-05-20",
+        "name": "Cybersecurity and Networking Fundamentals",
+        "issuer": "KG CYBER (Kibir Gasha Cyber PLC)",
+        "date": "2024-05-15",
         "image": "",
-        "description": "Specialization covering neural network construction, computer vision, natural language processing, and time-series predictions in TensorFlow.",
-        "url": "https://coursera.org/verify/tensorflow-developer"
+        "description": "Successfully completed the two-month Cybersecurity and Networking Fundamentals Training Program aligned with the ISC2 Certified in Cybersecurity (CC) domains.",
+        "url": ""
+    }
+},
+{
+    "model": "resume.certificate",
+    "pk": 4,
+    "fields": {
+        "name": "Student Startup Competition - Top Winner",
+        "issuer": "University of Gondar",
+        "date": "2025-11-20",
+        "image": "",
+        "description": "In recognition of outstanding achievement as one of the Top Winners in the Student Startup Competition, held at the University of Gondar.",
+        "url": ""
     }
 }
 ]
