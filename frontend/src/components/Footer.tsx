@@ -19,7 +19,7 @@ const Footer: React.FC = () => {
     { name: 'GitHub', url: 'https://github.com/TADESE23', icon: <FaGithub className="w-5 h-5" /> },
     { name: 'LinkedIn', url: 'https://www.linkedin.com/in/tadese-mesfin-mesfin-045412398', icon: <FaLinkedin className="w-5 h-5" /> },
     { name: 'Telegram', url: 'https://t.me/Mtade23', icon: <FaTelegramPlane className="w-5 h-5" /> },
-    { name: 'Email', url: 'mailto:tadesemesfin23@gmail.com', icon: <FaEnvelope className="w-5 h-5" /> },
+    { name: 'Email', url: 'mailto:tadesemesfin136@gmail.com', icon: <FaEnvelope className="w-5 h-5" /> },
   ];
 
   return (

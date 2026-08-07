@@ -41,7 +41,7 @@ const Contact: React.FC = () => {
   };
 
   const contactChannels = [
-    { title: 'Email Address', value: 'tadesemesfin23@gmail.com', icon: <FaEnvelope className="text-primary w-5 h-5" />, href: 'mailto:tadesemesfin23@gmail.com' },
+    { title: 'Email Address', value: 'tadesemesfin136@gmail.com', icon: <FaEnvelope className="text-primary w-5 h-5" />, href: 'mailto:tadesemesfin136@gmail.com' },
     { title: 'Phone / Telegram', value: '+251 900 000 000', icon: <FaPhone className="text-secondary w-5 h-5" />, href: 'https://t.me/Mtade23' },
     { title: 'Base Location', value: 'Addis Ababa, Ethiopia', icon: <FaMapMarkerAlt className="text-accent w-5 h-5" />, href: '#' }
   ];

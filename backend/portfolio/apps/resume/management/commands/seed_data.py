@@ -35,7 +35,7 @@ class Command(BaseCommand):
                     "learning, neural networks, and distributed computing."
                 ),
                 'profile_image_url': "https://cdn.jsdelivr.net/gh/TADESE23/my-portfolio-website@main/frontend/public/profile.jpg",
-                'email': "tadesemesfin23@gmail.com",
+                'email': "tadesemesfin136@gmail.com",
                 'phone': "+251900000000",
                 'location': "Addis Ababa, Ethiopia",
                 'mission': "To build intelligent, high-performance software solutions that bridge the gap between human capabilities and automated machine intelligence.",

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FaDownload, FaArrowRight, FaGithub, FaLinkedin, FaTelegramPlane } from 'react-icons/fa';
+import { FaDownload, FaArrowRight, FaGithub, FaLinkedin, FaTelegramPlane, FaEnvelope } from 'react-icons/fa';
 import ParticlesBackground from '../components/ParticlesBackground';
 import { fadeUp, staggerContainer, floatingIcon } from '../animations/framer';
 import api, { getImageUrl } from '../services/api';
@@ -175,14 +175,17 @@ const Home: React.FC = () => {
 
           {/* Quick Socials */}
           <motion.div variants={fadeUp(0.75)} className="flex justify-center lg:justify-start gap-4 pt-6 text-slatefg-muted dark:text-slatefg-dark/60">
-            <a href="https://github.com/TADESE23" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-200">
+            <a href="https://github.com/TADESE23" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-200" title="GitHub">
               <FaGithub className="w-6 h-6" />
             </a>
-            <a href="https://www.linkedin.com/in/tadese-mesfin-mesfin-045412398" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-200">
+            <a href="https://www.linkedin.com/in/tadese-mesfin-mesfin-045412398" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-200" title="LinkedIn">
               <FaLinkedin className="w-6 h-6" />
             </a>
-            <a href="https://t.me/Mtade23" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-200">
+            <a href="https://t.me/Mtade23" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-200" title="Telegram">
               <FaTelegramPlane className="w-6 h-6" />
+            </a>
+            <a href="mailto:tadesemesfin136@gmail.com" className="hover:text-primary transition-colors duration-200" title="Email Me">
+              <FaEnvelope className="w-6 h-6" />
             </a>
           </motion.div>
         </motion.div>
