@@ -109,7 +109,7 @@ class Command(BaseCommand):
                 "name": "Student Management System",
                 "description": "A comprehensive school database system allowing administration to manage student enrollments, attendance, grades, and fee payments efficiently with custom analytics dashboards.",
                 "github_url": "https://github.com/TADESE23",
-                "live_url": "https://sms-demo.example.com",
+                "live_url": "",
                 "features": ["Student & Staff Profile Management", "Grade & Attendance Tracking", "Automated Report Card Generation", "Analytical Admin Dashboard"],
                 "techs": ["React", "Node.js", "MySQL"],
                 "order": 1
@@ -118,7 +118,7 @@ class Command(BaseCommand):
                 "name": "Human Resource Management System",
                 "description": "An enterprise-grade employee resource directory featuring attendance clocks, leave requests approval workflow, payroll management, and interactive performance reports.",
                 "github_url": "https://github.com/TADESE23",
-                "live_url": "https://hrms-demo.example.com",
+                "live_url": "",
                 "features": ["Employee Check-in/Check-out", "Leave Management Workflow", "Payroll & Salary Slips Generation", "Role-based access control"],
                 "techs": ["React", "Express", "MySQL"],
                 "order": 2
@@ -127,7 +127,7 @@ class Command(BaseCommand):
                 "name": "ProLink Professional Networking Platform",
                 "description": "A customized social networking app for professionals to share portfolios, post project collaborations, chat in real-time, and search for specialized remote job postings.",
                 "github_url": "https://github.com/TADESE23",
-                "live_url": "https://prolink-demo.example.com",
+                "live_url": "",
                 "features": ["Real-time Instant Messaging", "Post Sharing and Interaction", "Portfolio Linking & Search Filters", "Job Application Portal"],
                 "techs": ["React", "Node.js", "MySQL"],
                 "order": 3

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FaSearch, FaGithub, FaExternalLinkAlt, FaListUl, FaTimes } from 'react-icons/fa';
+import { motion } from 'framer-motion';
+import { FaSearch, FaGithub, FaExternalLinkAlt, FaRocket } from 'react-icons/fa';
 import api, { getImageUrl } from '../services/api';
 import { Project } from '../types';
 import LoadingSkeleton from '../components/LoadingSkeleton';
+import ProjectDemoModal from '../components/ProjectDemoModal';
+import ProjectDemoShowcase from '../components/ProjectDemoShowcase';
 
 const formatUrl = (url: string) => {
   if (!url || url === '#') return '#';
@@ -19,7 +21,8 @@ const Projects: React.FC = () => {
   const [search, setSearch] = useState('');
   const [selectedTech, setSelectedTech] = useState('All');
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [demoProject, setDemoProject] = useState<Project | null>(null);
+  const [demoIndex, setDemoIndex] = useState(0);
 
   const projectsPerPage = 6;
 
@@ -44,7 +47,7 @@ const Projects: React.FC = () => {
       description: 'A comprehensive school database system allowing administration to manage student enrollments, attendance, grades, and fee payments efficiently with custom analytics dashboards.',
       image: null,
       github_url: 'https://github.com/TADESE23',
-      live_url: '#',
+      live_url: '',
       technologies_names: ['React', 'Node.js', 'MySQL'],
       features: ['Student & Staff Profile Management', 'Grade & Attendance Tracking', 'Automated Report Card Generation', 'Analytical Admin Dashboard'],
       order: 1,
@@ -56,7 +59,7 @@ const Projects: React.FC = () => {
       description: 'An enterprise-grade employee resource directory featuring attendance clocks, leave requests approval workflow, payroll management, and interactive performance reports.',
       image: null,
       github_url: 'https://github.com/TADESE23',
-      live_url: '#',
+      live_url: '',
       technologies_names: ['React', 'Express', 'MySQL'],
       features: ['Employee Check-in/Check-out', 'Leave Management Workflow', 'Payroll & Salary Slips Generation', 'Role-based access control'],
       order: 2,
@@ -68,7 +71,7 @@ const Projects: React.FC = () => {
       description: 'A customized social networking app for professionals to share portfolios, post project collaborations, chat in real-time, and search for specialized remote job postings.',
       image: null,
       github_url: 'https://github.com/TADESE23',
-      live_url: '#',
+      live_url: '',
       technologies_names: ['React', 'Node.js', 'MySQL'],
       features: ['Real-time Instant Messaging', 'Post Sharing and Interaction', 'Portfolio Linking & Search Filters', 'Job Application Portal'],
       order: 3,
@@ -139,6 +142,17 @@ const Projects: React.FC = () => {
             A curated list of applications I've built, reflecting design, architecture, and coding paradigms.
           </motion.p>
         </div>
+
+        {/* ── Interactive Demo Showcase ── */}
+        {!loading && (
+          <ProjectDemoShowcase
+            projects={localProjects}
+            onOpenDemo={(proj, idx) => {
+              setDemoProject(proj);
+              setDemoIndex(idx);
+            }}
+          />
+        )}
 
         {/* Filters & Search bars */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-12">
@@ -231,11 +245,14 @@ const Projects: React.FC = () => {
 
                   {/* Buttons controls */}
                   <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slatebg-border/60">
+                    {/* View Demo CTA */}
                     <button
-                      onClick={() => setSelectedProject(project)}
-                      className="flex items-center gap-1.5 text-xs text-primary dark:text-secondary-light font-bold hover:underline"
+                      id={`view-demo-btn-${project.id}`}
+                      onClick={() => { setDemoProject(project); setDemoIndex(idx); }}
+                      className="flex items-center gap-1.5 text-xs font-bold text-white bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary px-3 py-1.5 rounded-lg shadow-sm hover:shadow-primary/30 transition-all duration-300 group"
                     >
-                      <FaListUl /> Features
+                      <FaRocket className="group-hover:-translate-y-0.5 transition-transform" />
+                      View Demo
                     </button>
 
                     <div className="flex items-center gap-2">
@@ -243,20 +260,37 @@ const Projects: React.FC = () => {
                         href={formatUrl(project.github_url)}
                         target="_blank"
                         rel="noopener noreferrer"
+                        id={`github-link-${project.id}`}
                         className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slatebg-border dark:hover:bg-slate-700 text-slatefg-muted dark:text-white transition-colors"
                         aria-label="GitHub Repository"
+                        title="View GitHub Repository"
                       >
                         <FaGithub />
                       </a>
-                      <a
-                        href={formatUrl(project.live_url)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-2 rounded-xl bg-primary hover:bg-secondary text-white transition-colors"
-                        aria-label="Live Demo Link"
-                      >
-                        <FaExternalLinkAlt />
-                      </a>
+                      {project.live_url && project.live_url !== '#' ? (
+                        <a
+                          href={formatUrl(project.live_url)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          id={`live-link-${project.id}`}
+                          className="p-2 rounded-xl bg-primary hover:bg-secondary text-white transition-colors"
+                          aria-label="Live Demo Link"
+                          title="Open Live Website"
+                        >
+                          <FaExternalLinkAlt />
+                        </a>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => { setDemoProject(project); setDemoIndex(idx); }}
+                          id={`live-link-${project.id}`}
+                          className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slatebg-border dark:hover:bg-slate-700 text-slatefg-muted dark:text-white transition-colors"
+                          aria-label="Interactive Demo"
+                          title="Open Interactive Demo Modal"
+                        >
+                          <FaExternalLinkAlt />
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -304,81 +338,12 @@ const Projects: React.FC = () => {
 
       </div>
 
-      {/* Details Features Drawer Modal */}
-      <AnimatePresence>
-        {selectedProject && (
-          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.6 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSelectedProject(null)}
-              className="absolute inset-0 bg-slate-900"
-            />
-            {/* Modal Body */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 30 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 30 }}
-              transition={{ duration: 0.3 }}
-              className="relative w-full max-w-2xl bg-white dark:bg-slatebg-card border border-slate-200 dark:border-slatebg-border rounded-3xl shadow-2xl p-8 overflow-hidden z-10"
-            >
-              <button
-                onClick={() => setSelectedProject(null)}
-                className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors"
-                aria-label="Close Modal"
-              >
-                <FaTimes className="w-4 h-4" />
-              </button>
-
-              <h4 className="text-2xl font-bold text-slate-800 dark:text-white border-b pb-4 mb-6 border-slate-200 dark:border-slatebg-border">
-                {selectedProject.name} — Feature Matrix
-              </h4>
-
-              <p className="text-slatefg-muted dark:text-slatefg-dark/80 text-sm sm:text-base leading-relaxed mb-6 font-inter">
-                {selectedProject.description}
-              </p>
-
-              <div className="space-y-4">
-                <h5 className="font-bold text-sm text-slate-800 dark:text-white uppercase tracking-wider font-inter">
-                  Core Implementation Features:
-                </h5>
-                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {selectedProject.features.map((feature, fIdx) => (
-                    <li
-                      key={fIdx}
-                      className="flex items-center gap-3 text-slate-700 dark:text-slatefg-dark/80 font-inter text-sm"
-                    >
-                      <span className="w-2 h-2 rounded-full bg-primary" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="flex gap-4 mt-8 pt-6 border-t border-slate-100 dark:border-slatebg-border/60">
-                <a
-                  href={formatUrl(selectedProject.github_url)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 flex-1 py-3 bg-slate-100 dark:bg-slatebg-border dark:hover:bg-slate-700 hover:bg-slate-200 text-slate-800 dark:text-white font-bold rounded-2xl transition-all"
-                >
-                  <FaGithub /> Source Code
-                </a>
-                <a
-                  href={formatUrl(selectedProject.live_url)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 flex-1 py-3 bg-primary hover:bg-secondary text-white font-bold rounded-2xl transition-all"
-                >
-                  <FaExternalLinkAlt /> Live Deployment
-                </a>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+      {/* Project Demo Modal */}
+      <ProjectDemoModal
+        project={demoProject}
+        projectIndex={demoIndex}
+        onClose={() => setDemoProject(null)}
+      />
     </section>
   );
 };
