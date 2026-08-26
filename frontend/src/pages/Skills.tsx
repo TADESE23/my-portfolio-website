@@ -89,58 +89,60 @@ const getSkillIcon = (iconName: string, skillName: string) => {
   }
 };
 
+const DEFAULT_SKILLS: Skill[] = [
+  // Frontend
+  { id: 1, name: 'React', percentage: 90, category: 'frontend', icon: 'FaReact' },
+  { id: 2, name: 'Next.js', percentage: 80, category: 'frontend', icon: 'SiNextdotjs' },
+  { id: 3, name: 'JavaScript', percentage: 92, category: 'frontend', icon: 'IoLogoJavascript' },
+  { id: 4, name: 'TypeScript', percentage: 85, category: 'frontend', icon: 'SiTypescript' },
+  { id: 5, name: 'TailwindCSS', percentage: 95, category: 'frontend', icon: 'SiTailwindcss' },
+  { id: 6, name: 'Bootstrap', percentage: 85, category: 'frontend', icon: 'FaBootstrap' },
+  { id: 7, name: 'HTML5', percentage: 98, category: 'frontend', icon: 'FaHtml5' },
+  { id: 8, name: 'CSS3', percentage: 92, category: 'frontend', icon: 'FaCss3Alt' },
+  
+  // Backend
+  { id: 9, name: 'Django', percentage: 88, category: 'backend', icon: 'SiDjango' },
+  { id: 10, name: 'Flask', percentage: 75, category: 'backend', icon: 'SiFlask' },
+  { id: 11, name: 'FastAPI', percentage: 80, category: 'backend', icon: 'SiFastapi' },
+  { id: 12, name: 'Node.js', percentage: 85, category: 'backend', icon: 'FaNodeJs' },
+  { id: 13, name: 'Express', percentage: 82, category: 'backend', icon: 'SiExpress' },
+  
+  // Database
+  { id: 14, name: 'MySQL', percentage: 85, category: 'database', icon: 'SiMysql' },
+  { id: 15, name: 'PostgreSQL', percentage: 88, category: 'database', icon: 'DiPostgresql' },
+  { id: 16, name: 'MongoDB', percentage: 78, category: 'database', icon: 'SiMongodb' },
+  
+  // AI
+  { id: 17, name: 'TensorFlow', percentage: 75, category: 'ai', icon: 'SiTensorflow' },
+  
+  // Programming
+  { id: 18, name: 'Python', percentage: 90, category: 'programming', icon: 'FaPython' },
+  
+  // Tools
+  { id: 19, name: 'Git', percentage: 90, category: 'tools', icon: 'FaGitAlt' },
+  { id: 20, name: 'GitHub', percentage: 92, category: 'tools', icon: 'FaGithub' },
+  { id: 21, name: 'Docker', percentage: 80, category: 'tools', icon: 'FaDocker' }
+];
+
 const Skills: React.FC = () => {
-  const [skills, setSkills] = useState<Skill[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [skills, setSkills] = useState<Skill[]>(DEFAULT_SKILLS);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchSkills = async () => {
       try {
         const res = await api.get('/skills/');
-        setSkills(res.data);
+        if (res.data && res.data.length > 0) {
+          setSkills(res.data);
+        }
       } catch (err) {
-        console.warn('API error, using static fallback skills list');
-      } finally {
-        setLoading(false);
+        console.warn('API error, using cached skills list');
       }
     };
     fetchSkills();
   }, []);
 
-  const localSkills: Skill[] = skills.length > 0 ? skills : [
-    // Frontend
-    { id: 1, name: 'React', percentage: 90, category: 'frontend', icon: 'FaReact' },
-    { id: 2, name: 'Next.js', percentage: 80, category: 'frontend', icon: 'SiNextdotjs' },
-    { id: 3, name: 'JavaScript', percentage: 92, category: 'frontend', icon: 'IoLogoJavascript' },
-    { id: 4, name: 'TypeScript', percentage: 85, category: 'frontend', icon: 'SiTypescript' },
-    { id: 5, name: 'TailwindCSS', percentage: 95, category: 'frontend', icon: 'SiTailwindcss' },
-    { id: 6, name: 'Bootstrap', percentage: 85, category: 'frontend', icon: 'FaBootstrap' },
-    { id: 7, name: 'HTML5', percentage: 98, category: 'frontend', icon: 'FaHtml5' },
-    { id: 8, name: 'CSS3', percentage: 92, category: 'frontend', icon: 'FaCss3Alt' },
-    
-    // Backend
-    { id: 9, name: 'Django', percentage: 88, category: 'backend', icon: 'SiDjango' },
-    { id: 10, name: 'Flask', percentage: 75, category: 'backend', icon: 'SiFlask' },
-    { id: 11, name: 'FastAPI', percentage: 80, category: 'backend', icon: 'SiFastapi' },
-    { id: 12, name: 'Node.js', percentage: 85, category: 'backend', icon: 'FaNodeJs' },
-    { id: 13, name: 'Express', percentage: 82, category: 'backend', icon: 'SiExpress' },
-    
-    // Database
-    { id: 14, name: 'MySQL', percentage: 85, category: 'database', icon: 'SiMysql' },
-    { id: 15, name: 'PostgreSQL', percentage: 88, category: 'database', icon: 'DiPostgresql' },
-    { id: 16, name: 'MongoDB', percentage: 78, category: 'database', icon: 'SiMongodb' },
-    
-    // AI
-    { id: 17, name: 'TensorFlow', percentage: 75, category: 'ai', icon: 'SiTensorflow' },
-    
-    // Programming
-    { id: 18, name: 'Python', percentage: 90, category: 'programming', icon: 'FaPython' },
-    
-    // Tools
-    { id: 19, name: 'Git', percentage: 90, category: 'tools', icon: 'FaGitAlt' },
-    { id: 20, name: 'GitHub', percentage: 92, category: 'tools', icon: 'FaGithub' },
-    { id: 21, name: 'Docker', percentage: 80, category: 'tools', icon: 'FaDocker' }
-  ];
+  const localSkills: Skill[] = skills;
 
   const categories = [
     { key: 'frontend', label: 'Frontend Stack' },

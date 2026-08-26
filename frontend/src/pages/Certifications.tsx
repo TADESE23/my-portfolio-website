@@ -5,62 +5,64 @@ import api, { getImageUrl } from '../services/api';
 import { Certificate } from '../types';
 import LoadingSkeleton from '../components/LoadingSkeleton';
 
+const DEFAULT_CERTS: Certificate[] = [
+  {
+    id: 1,
+    name: '5 Million Ethiopian Coders Initiative',
+    issuer: 'Programming Basics',
+    date: '2024-01-01',
+    image: null,
+    description: 'Completed the foundational programming training as part of the 5 Million Ethiopian Coders initiative.',
+    url: ''
+  },
+  {
+    id: 2,
+    name: 'Overview of AI Completion',
+    issuer: 'Huawei',
+    date: '2024-03-10',
+    image: null,
+    description: 'Completed the overview of Artificial Intelligence course provided by Huawei.',
+    url: ''
+  },
+  {
+    id: 3,
+    name: 'Cybersecurity and Networking Fundamentals',
+    issuer: 'KG CYBER (Kibir Gasha Cyber PLC)',
+    date: '2024-05-15',
+    image: null,
+    description: 'Successfully completed the two-month Cybersecurity and Networking Fundamentals Training Program aligned with the ISC2 Certified in Cybersecurity (CC) domains.',
+    url: ''
+  },
+  {
+    id: 4,
+    name: 'Student Startup Competition - Top Winner',
+    issuer: 'University of Gondar',
+    date: '2025-11-20',
+    image: null,
+    description: 'In recognition of outstanding achievement as one of the Top Winners in the Student Startup Competition, held at the University of Gondar.',
+    url: ''
+  }
+];
+
 const Certifications: React.FC = () => {
-  const [certs, setCerts] = useState<Certificate[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [certs, setCerts] = useState<Certificate[]>(DEFAULT_CERTS);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchCerts = async () => {
       try {
         const res = await api.get('/resume/certificates/');
-        setCerts(res.data);
+        if (res.data && res.data.length > 0) {
+          setCerts(res.data);
+        }
       } catch (err) {
-        console.warn('API error, using static fallback certifications list');
-      } finally {
-        setLoading(false);
+        console.warn('API error, using cached certifications list');
       }
     };
     fetchCerts();
   }, []);
 
-  const defaultCerts: Certificate[] = [
-    {
-      id: 1,
-      name: '5 Million Ethiopian Coders Initiative',
-      issuer: 'Programming Basics',
-      date: '2024-01-01',
-      image: null,
-      description: 'Completed the foundational programming training as part of the 5 Million Ethiopian Coders initiative.',
-      url: ''
-    },
-    {
-      id: 2,
-      name: 'Overview of AI Completion',
-      issuer: 'Huawei',
-      date: '2024-03-10',
-      image: null,
-      description: 'Completed the overview of Artificial Intelligence course provided by Huawei.',
-      url: ''
-    },
-    {
-      id: 3,
-      name: 'Cybersecurity and Networking Fundamentals',
-      issuer: 'KG CYBER (Kibir Gasha Cyber PLC)',
-      date: '2024-05-15',
-      image: null,
-      description: 'Successfully completed the two-month Cybersecurity and Networking Fundamentals Training Program aligned with the ISC2 Certified in Cybersecurity (CC) domains.',
-      url: ''
-    },
-    {
-      id: 4,
-      name: 'Student Startup Competition - Top Winner',
-      issuer: 'University of Gondar',
-      date: '2025-11-20',
-      image: null,
-      description: 'In recognition of outstanding achievement as one of the Top Winners in the Student Startup Competition, held at the University of Gondar.',
-      url: ''
-    }
-  ];
+  const defaultCerts = DEFAULT_CERTS;
 
   // Combine fetched certificates with default list, filtering out any duplicates by name
   const displayCerts: Certificate[] = certs.length > 0

@@ -5,62 +5,70 @@ import api from '../services/api';
 import { Education, Experience, Profile } from '../types';
 import LoadingSkeleton from '../components/LoadingSkeleton';
 
+const DEFAULT_EDUCATION: Education[] = [
+  {
+    id: 1,
+    institution: 'Addis Ababa University',
+    degree: 'Bachelor of Science',
+    field_of_study: 'Computer Science',
+    start_date: '2020-10-01',
+    end_date: '2024-07-05',
+    description: 'Graduated with high distinction. Covered advanced topics including Data Structures, Algorithms, Software Engineering, Artificial Intelligence, Database Management Systems, and Machine Learning.',
+    current: false
+  }
+];
+
+const DEFAULT_EXPERIENCE: Experience[] = [
+  {
+    id: 1,
+    company: 'University of Gondar',
+    position: 'Full Stack Developer',
+    location: 'Gondar',
+    start_date: '2023-07-01',
+    end_date: '2023-10-31',
+    description: 'Developed and optimized frontend interfaces using React and Tailwind CSS. Built REST API endpoints in Node.js/Express. Wrote unit tests and automated builds via GitHub Actions.',
+    current: false
+  }
+];
+
 const Resume: React.FC = () => {
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [education, setEducation] = useState<Education[]>([]);
-  const [experience, setExperience] = useState<Experience[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [education, setEducation] = useState<Education[]>(DEFAULT_EDUCATION);
+  const [experience, setExperience] = useState<Experience[]>(DEFAULT_EXPERIENCE);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchResumeData = async () => {
       try {
-        const [profileRes, eduRes, expRes] = await Promise.all([
+        const results = await Promise.allSettled([
           api.get('/resume/profile/'),
           api.get('/resume/education/'),
           api.get('/resume/experience/'),
         ]);
 
-        if (profileRes.data && profileRes.data.length > 0) {
+        const profileRes = results[0].status === 'fulfilled' ? results[0].value : null;
+        const eduRes = results[1].status === 'fulfilled' ? results[1].value : null;
+        const expRes = results[2].status === 'fulfilled' ? results[2].value : null;
+
+        if (profileRes?.data && profileRes.data.length > 0) {
           setProfile(profileRes.data[0]);
         }
-        setEducation(eduRes.data);
-        setExperience(expRes.data);
+        if (eduRes?.data && eduRes.data.length > 0) {
+          setEducation(eduRes.data);
+        }
+        if (expRes?.data && expRes.data.length > 0) {
+          setExperience(expRes.data);
+        }
       } catch (err) {
-        console.warn('API connection failed, falling back to static resume schema');
-      } finally {
-        setLoading(false);
+        console.warn('API connection fallback active');
       }
     };
     fetchResumeData();
   }, []);
 
   const localCvUrl = profile?.cv || '#';
-
-  const localEdu: Education[] = education.length > 0 ? education : [
-    {
-      id: 1,
-      institution: 'Addis Ababa University',
-      degree: 'Bachelor of Science',
-      field_of_study: 'Computer Science',
-      start_date: '2020-10-01',
-      end_date: '2024-07-05',
-      description: 'Graduated with high distinction. Covered advanced topics including Data Structures, Algorithms, Software Engineering, Artificial Intelligence, Database Management Systems, and Machine Learning.',
-      current: false
-    }
-  ];
-
-  const localExp: Experience[] = experience.length > 0 ? experience : [
-    {
-      id: 1,
-      company: 'University of Gondar',
-      position: 'Full Stack Developer',
-      location: 'Gondar',
-      start_date: '2023-07-01',
-      end_date: '2023-10-31',
-      description: 'Developed and optimized frontend interfaces using React and Tailwind CSS. Built REST API endpoints in Node.js/Express. Wrote unit tests and automated builds via GitHub Actions.',
-      current: false
-    }
-  ];
+  const localEdu: Education[] = education;
+  const localExp: Experience[] = experience;
 
   return (
     <section className="min-h-screen py-28 bg-slate-50 dark:bg-slatebg-dark transition-colors duration-300">

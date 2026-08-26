@@ -15,9 +15,60 @@ const formatUrl = (url: string) => {
   return url;
 };
 
+const DEFAULT_PROJECTS: Project[] = [
+  {
+    id: 1,
+    name: 'Student Management System',
+    description: 'A comprehensive school database system allowing administration to manage student enrollments, attendance, grades, and fee payments efficiently with custom analytics dashboards.',
+    image: null,
+    github_url: 'https://github.com/TADESE23',
+    live_url: '',
+    technologies_names: ['React', 'Node.js', 'MySQL'],
+    features: ['Student & Staff Profile Management', 'Grade & Attendance Tracking', 'Automated Report Card Generation', 'Analytical Admin Dashboard'],
+    order: 1,
+    created_at: '2024-01-01T00:00:00Z'
+  },
+  {
+    id: 2,
+    name: 'Human Resource Management System',
+    description: 'An enterprise-grade employee resource directory featuring attendance clocks, leave requests approval workflow, payroll management, and interactive performance reports.',
+    image: null,
+    github_url: 'https://github.com/TADESE23',
+    live_url: '',
+    technologies_names: ['React', 'Express', 'MySQL'],
+    features: ['Employee Check-in/Check-out', 'Leave Management Workflow', 'Payroll & Salary Slips Generation', 'Role-based access control'],
+    order: 2,
+    created_at: '2024-01-02T00:00:00Z'
+  },
+  {
+    id: 3,
+    name: 'ProLink Professional Networking Platform',
+    description: 'A customized social networking app for professionals to share portfolios, post project collaborations, chat in real-time, and search for specialized remote job postings.',
+    image: null,
+    github_url: 'https://github.com/TADESE23',
+    live_url: '',
+    technologies_names: ['React', 'Node.js', 'MySQL'],
+    features: ['Real-time Instant Messaging', 'Post Sharing and Interaction', 'Portfolio Linking & Search Filters', 'Job Application Portal'],
+    order: 3,
+    created_at: '2024-01-03T00:00:00Z'
+  },
+  {
+    id: 4,
+    name: 'Telegram Exit Exam Bot',
+    description: 'An interactive chatbot engineered to help graduating computer science students study for exit examinations by delivering daily quizzes, scoring metrics, and study materials via Telegram.',
+    image: null,
+    github_url: 'https://github.com/TADESE23',
+    live_url: 'https://t.me/exit_exam_bot_demo',
+    technologies_names: ['Node.js', 'Telegram Bot API', 'MySQL'],
+    features: ['Command-based quiz navigation', 'Adaptive learning progress tracking', 'Immediate score feedbacks', 'Comprehensive library access'],
+    order: 4,
+    created_at: '2024-01-04T00:00:00Z'
+  }
+];
+
 const Projects: React.FC = () => {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [projects, setProjects] = useState<Project[]>(DEFAULT_PROJECTS);
+  const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
   const [selectedTech, setSelectedTech] = useState('All');
   const [currentPage, setCurrentPage] = useState(1);
@@ -30,66 +81,17 @@ const Projects: React.FC = () => {
     const fetchProjects = async () => {
       try {
         const res = await api.get('/projects/');
-        setProjects(res.data);
+        if (res.data && res.data.length > 0) {
+          setProjects(res.data);
+        }
       } catch (err) {
-        console.warn('API error, using fallback projects list');
-      } finally {
-        setLoading(false);
+        console.warn('API error, using cached projects list');
       }
     };
     fetchProjects();
   }, []);
 
-  const localProjects: Project[] = projects.length > 0 ? projects : [
-    {
-      id: 1,
-      name: 'Student Management System',
-      description: 'A comprehensive school database system allowing administration to manage student enrollments, attendance, grades, and fee payments efficiently with custom analytics dashboards.',
-      image: null,
-      github_url: 'https://github.com/TADESE23',
-      live_url: '',
-      technologies_names: ['React', 'Node.js', 'MySQL'],
-      features: ['Student & Staff Profile Management', 'Grade & Attendance Tracking', 'Automated Report Card Generation', 'Analytical Admin Dashboard'],
-      order: 1,
-      created_at: '2024-01-01T00:00:00Z'
-    },
-    {
-      id: 2,
-      name: 'Human Resource Management System',
-      description: 'An enterprise-grade employee resource directory featuring attendance clocks, leave requests approval workflow, payroll management, and interactive performance reports.',
-      image: null,
-      github_url: 'https://github.com/TADESE23',
-      live_url: '',
-      technologies_names: ['React', 'Express', 'MySQL'],
-      features: ['Employee Check-in/Check-out', 'Leave Management Workflow', 'Payroll & Salary Slips Generation', 'Role-based access control'],
-      order: 2,
-      created_at: '2024-01-02T00:00:00Z'
-    },
-    {
-      id: 3,
-      name: 'ProLink Professional Networking Platform',
-      description: 'A customized social networking app for professionals to share portfolios, post project collaborations, chat in real-time, and search for specialized remote job postings.',
-      image: null,
-      github_url: 'https://github.com/TADESE23',
-      live_url: '',
-      technologies_names: ['React', 'Node.js', 'MySQL'],
-      features: ['Real-time Instant Messaging', 'Post Sharing and Interaction', 'Portfolio Linking & Search Filters', 'Job Application Portal'],
-      order: 3,
-      created_at: '2024-01-03T00:00:00Z'
-    },
-    {
-      id: 4,
-      name: 'Telegram Exit Exam Bot',
-      description: 'An interactive chatbot engineered to help graduating computer science students study for exit examinations by delivering daily quizzes, scoring metrics, and study materials via Telegram.',
-      image: null,
-      github_url: 'https://github.com/TADESE23',
-      live_url: 'https://t.me/exit_exam_bot_demo',
-      technologies_names: ['Node.js', 'Telegram Bot API', 'MySQL'],
-      features: ['Command-based quiz navigation', 'Adaptive learning progress tracking', 'Immediate score feedbacks', 'Comprehensive library access'],
-      order: 4,
-      created_at: '2024-01-04T00:00:00Z'
-    }
-  ];
+  const localProjects: Project[] = projects;
 
   // Compile list of technologies dynamically for filters
   const allTechs = ['All', ...Array.from(new Set(localProjects.flatMap(p => p.technologies_names)))];

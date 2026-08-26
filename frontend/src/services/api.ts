@@ -11,6 +11,7 @@ export const getImageUrl = (path: string | null | undefined, fallback: string = 
 
 const api = axios.create({
   baseURL: API_BASE,
+  timeout: 4500, // 4.5s fast timeout to prevent cold-start hanging
 });
 
 // Interceptor to add Authorization Token

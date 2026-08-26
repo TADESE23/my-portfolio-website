@@ -9,26 +9,32 @@ const About: React.FC = () => {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [education, setEducation] = useState<Education[]>([]);
   const [experience, setExperience] = useState<Experience[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchAboutData = async () => {
       try {
-        const [profileRes, eduRes, expRes] = await Promise.all([
+        const results = await Promise.allSettled([
           api.get('/resume/profile/'),
           api.get('/resume/education/'),
           api.get('/resume/experience/'),
         ]);
 
-        if (profileRes.data && profileRes.data.length > 0) {
+        const profileRes = results[0].status === 'fulfilled' ? results[0].value : null;
+        const eduRes = results[1].status === 'fulfilled' ? results[1].value : null;
+        const expRes = results[2].status === 'fulfilled' ? results[2].value : null;
+
+        if (profileRes?.data && profileRes.data.length > 0) {
           setProfile(profileRes.data[0]);
         }
-        setEducation(eduRes.data);
-        setExperience(expRes.data);
+        if (eduRes?.data && eduRes.data.length > 0) {
+          setEducation(eduRes.data);
+        }
+        if (expRes?.data && expRes.data.length > 0) {
+          setExperience(expRes.data);
+        }
       } catch (err) {
-        console.warn('API error fetching resume details, using fallback data');
-      } finally {
-        setLoading(false);
+        console.warn('API connection fallback active');
       }
     };
     fetchAboutData();

@@ -6,59 +6,66 @@ import api, { getImageUrl } from '../services/api';
 import { Blog, Category } from '../types';
 import LoadingSkeleton from '../components/LoadingSkeleton';
 
+const DEFAULT_BLOGS: Blog[] = [
+  {
+    id: 1,
+    title: 'Building Scalable Architectures with Django and React',
+    slug: 'building-scalable-architectures-with-django-and-react',
+    content: 'When building full stack web applications, structuring your codebase and communication layer efficiently is paramount. React handles rendering state-of-the-art UI elements, while Django REST Framework processes business logic and data securely.',
+    image: null,
+    category_name: 'Web Development',
+    category_details: { id: 1, name: 'Web Development', slug: 'web-development' },
+    created_at: '2024-06-15T12:00:00Z',
+    updated_at: '2024-06-15T12:00:00Z',
+    views: 42,
+    is_published: true
+  },
+  {
+    id: 2,
+    title: "Why I'm Pursuing an International Master's in Data Science",
+    slug: 'why-im-pursuing-an-international-masters-in-data-science',
+    content: 'The world is filled with massive streams of unstructured data. Processing, analyzing, and translating this data into actionable insights is the ultimate frontier of modern Computer Science.',
+    image: null,
+    category_name: 'Artificial Intelligence',
+    category_details: { id: 2, name: 'Artificial Intelligence', slug: 'artificial-intelligence' },
+    created_at: '2024-07-02T10:30:00Z',
+    updated_at: '2024-07-02T10:30:00Z',
+    views: 125,
+    is_published: true
+  }
+];
+
 const BlogPage: React.FC = () => {
-  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [blogs, setBlogs] = useState<Blog[]>(DEFAULT_BLOGS);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
   const [selectedCat, setSelectedCat] = useState('All');
 
   useEffect(() => {
     const fetchBlogData = async () => {
       try {
-        const [blogRes, catRes] = await Promise.all([
+        const results = await Promise.allSettled([
           api.get('/blogs/'),
           api.get('/blogs/categories/')
         ]);
-        setBlogs(blogRes.data);
-        setCategories(catRes.data);
+        const blogRes = results[0].status === 'fulfilled' ? results[0].value : null;
+        const catRes = results[1].status === 'fulfilled' ? results[1].value : null;
+
+        if (blogRes?.data && blogRes.data.length > 0) {
+          setBlogs(blogRes.data);
+        }
+        if (catRes?.data && catRes.data.length > 0) {
+          setCategories(catRes.data);
+        }
       } catch (err) {
-        console.warn('API error, using static fallback articles list');
-      } finally {
-        setLoading(false);
+        console.warn('API error, using cached articles list');
       }
     };
     fetchBlogData();
   }, []);
 
-  const localBlogs: Blog[] = blogs.length > 0 ? blogs : [
-    {
-      id: 1,
-      title: 'Building Scalable Architectures with Django and React',
-      slug: 'building-scalable-architectures-with-django-and-react',
-      content: 'When building full stack web applications, structuring your codebase and communication layer efficiently is paramount. React handles rendering state-of-the-art UI elements, while Django REST Framework processes business logic and data securely.',
-      image: null,
-      category_name: 'Web Development',
-      category_details: { id: 1, name: 'Web Development', slug: 'web-development' },
-      created_at: '2024-06-15T12:00:00Z',
-      updated_at: '2024-06-15T12:00:00Z',
-      views: 42,
-      is_published: true
-    },
-    {
-      id: 2,
-      title: "Why I'm Pursuing an International Master's in Data Science",
-      slug: 'why-im-pursuing-an-international-masters-in-data-science',
-      content: 'The world is filled with massive streams of unstructured data. Processing, analyzing, and translating this data into actionable insights is the ultimate frontier of modern Computer Science.',
-      image: null,
-      category_name: 'Artificial Intelligence',
-      category_details: { id: 2, name: 'Artificial Intelligence', slug: 'artificial-intelligence' },
-      created_at: '2024-07-02T10:30:00Z',
-      updated_at: '2024-07-02T10:30:00Z',
-      views: 125,
-      is_published: true
-    }
-  ];
+  const localBlogs: Blog[] = blogs;
 
   const localCats = categories.length > 0 ? categories : [
     { id: 1, name: 'Web Development', slug: 'web-development' },

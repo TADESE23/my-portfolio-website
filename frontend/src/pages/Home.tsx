@@ -86,10 +86,10 @@ const Home: React.FC = () => {
   const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
-    // Fetch stats and profile details from local APIs
+    // Fetch stats and profile details from local APIs non-blockingly
     const loadHomeData = async () => {
       try {
-        const [projRes, skillRes, blogRes, profRes, gitStats] = await Promise.all([
+        const results = await Promise.allSettled([
           api.get('/projects/'),
           api.get('/skills/'),
           api.get('/blogs/'),
@@ -97,14 +97,20 @@ const Home: React.FC = () => {
           fetchGithubStats()
         ]);
         
+        const projRes = results[0].status === 'fulfilled' ? results[0].value : null;
+        const skillRes = results[1].status === 'fulfilled' ? results[1].value : null;
+        const blogRes = results[2].status === 'fulfilled' ? results[2].value : null;
+        const profRes = results[3].status === 'fulfilled' ? results[3].value : null;
+        const gitStats = results[4].status === 'fulfilled' ? results[4].value : null;
+
         setStats({
-          projects: projRes.data.length || 4,
-          skills: skillRes.data.length || 22,
-          blogs: blogRes.data.length || 2,
+          projects: projRes?.data?.length || 4,
+          skills: skillRes?.data?.length || 22,
+          blogs: blogRes?.data?.length || 2,
           githubRepos: gitStats?.public_repos || 12
         });
 
-        if (profRes.data && profRes.data.length > 0) {
+        if (profRes?.data && profRes.data.length > 0) {
           const profile = profRes.data[0];
           const imgPath = profile.profile_image_url || profile.profile_image;
           if (imgPath) {
@@ -115,7 +121,7 @@ const Home: React.FC = () => {
           }
         }
       } catch (err) {
-        console.warn('API connection failed, falling back to default values');
+        console.warn('API connection fallback active');
       }
     };
     loadHomeData();
