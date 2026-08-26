@@ -4,7 +4,19 @@ export const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://my-portfol
 
 export const getImageUrl = (path: string | null | undefined, fallback: string = '/profile.jpg') => {
   if (!path || path.trim() === '') return fallback;
-  if (path.startsWith('http')) return path;
+  if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:')) {
+    return path;
+  }
+  // If it's a frontend static asset in /public
+  if (
+    path.startsWith('/profile') ||
+    path.startsWith('/avatar') ||
+    path.startsWith('/preview') ||
+    path.startsWith('/og-') ||
+    path.startsWith('./')
+  ) {
+    return path;
+  }
   const baseUrl = API_BASE.replace(/\/api\/?$/, '');
   return `${baseUrl}${path.startsWith('/') ? '' : '/'}${path}`;
 };
