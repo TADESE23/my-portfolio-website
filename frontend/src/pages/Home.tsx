@@ -113,7 +113,7 @@ const Home: React.FC = () => {
         if (profRes?.data && profRes.data.length > 0) {
           const profile = profRes.data[0];
           const imgPath = profile.profile_image_url || profile.profile_image;
-          if (imgPath) {
+          if (imgPath && !imgPath.includes('jsdelivr.net') && !imgPath.startsWith('/media/')) {
             setProfileImage(imgPath);
           }
           if (profile.cv_url || profile.cv) {
@@ -144,43 +144,51 @@ const Home: React.FC = () => {
           animate="visible"
           className="lg:col-span-7 space-y-6 text-center lg:text-left"
         >
-          <motion.div variants={fadeUp(0)} className="inline-block px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-semibold text-primary tracking-wide uppercase font-inter">
-            Welcome to my universe
+          {/* Status Badge */}
+          <motion.div variants={fadeUp(0)} className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            Available for Scholarships & Remote Roles
           </motion.div>
-          
-          <motion.h1 variants={fadeUp(0.15)} className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight">
+
+          {/* Heading */}
+          <motion.h1 variants={fadeUp(0.1)} className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
             Hi, I'm <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Tadese Mesfin</span>
           </motion.h1>
 
-          {/* Typing Line */}
-          <motion.div variants={fadeUp(0.3)} className="h-8 md:h-10 text-lg md:text-2xl font-medium text-slatefg-muted dark:text-slatefg-dark/80">
-            <span>{typingText}</span>
-            <span className="animate-ping text-primary">|</span>
+          {/* Dynamic Typing Title */}
+          <motion.div variants={fadeUp(0.2)} className="h-10 sm:h-12 flex items-center justify-center lg:justify-start">
+            <span className="text-lg sm:text-2xl font-medium text-slatefg-muted dark:text-slatefg-dark/90 font-inter">
+              I am a <span className="font-bold text-primary dark:text-secondary-light border-b-2 border-primary pb-0.5">{typingText}</span>
+              <span className="animate-pulse text-primary font-light">|</span>
+            </span>
           </motion.div>
 
-          <motion.p variants={fadeUp(0.45)} className="text-base text-slatefg-muted dark:text-slatefg-dark/75 max-w-xl mx-auto lg:mx-0 leading-relaxed font-inter">
-            A Computer Science graduate eager to build next-generation software systems, analyze high-velocity datasets, and develop robust, intelligent web applications. Seeking global scholarships in AI and Data Science.
+          {/* Bio text */}
+          <motion.p variants={fadeUp(0.3)} className="text-slatefg-muted dark:text-slatefg-dark/80 text-base sm:text-lg max-w-2xl font-inter leading-relaxed mx-auto lg:mx-0">
+            A Computer Science graduate passionate about building robust, scalable web platforms and exploring AI & Data Science innovations to solve real-world problems.
           </motion.p>
 
-          {/* Actions */}
-          <motion.div variants={fadeUp(0.6)} className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-4">
-            <a
-              href={cvUrl || '#'}
-              download="Tadese_Mesfin_CV.pdf"
-              className="flex items-center gap-2 bg-gradient-to-r from-primary to-secondary hover:from-primary-dark hover:to-secondary-dark text-white font-semibold py-3 px-6 rounded-2xl shadow-lg hover:shadow-primary/20 hover:-translate-y-0.5 transition-all duration-300"
-            >
-              <FaDownload className="text-sm" /> Download CV
-            </a>
+          {/* Action CTAs */}
+          <motion.div variants={fadeUp(0.4)} className="flex flex-wrap gap-4 justify-center lg:justify-start pt-2">
             <Link
-              to="/contact"
-              className="flex items-center gap-2 bg-white dark:bg-slatebg-card hover:bg-slate-100 dark:hover:bg-slatebg-border text-slate-800 dark:text-white font-semibold py-3 px-6 rounded-2xl border border-slate-200 dark:border-slatebg-border hover:-translate-y-0.5 transition-all duration-300 shadow-md"
+              to="/projects"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary text-white font-semibold px-6 py-3.5 rounded-2xl shadow-lg shadow-primary/25 hover:shadow-secondary/30 hover:-translate-y-0.5 transition-all duration-300"
             >
-              Contact Me <FaArrowRight className="text-xs" />
+              Explore Projects <FaArrowRight className="text-xs" />
             </Link>
+            <a
+              href={cvUrl || '/media/resumes/Tadese_mesfin_Abay__2_.pdf'}
+              target="_blank"
+              rel="noopener noreferrer"
+              download
+              className="inline-flex items-center gap-2 bg-white dark:bg-slatebg-card hover:bg-slate-100 dark:hover:bg-slatebg-border text-slate-800 dark:text-white border border-slate-200 dark:border-slatebg-border font-semibold px-6 py-3.5 rounded-2xl transition-all duration-300 hover:-translate-y-0.5 shadow-sm"
+            >
+              <FaDownload className="text-xs text-primary" /> Download CV
+            </a>
           </motion.div>
 
-          {/* Quick Socials */}
-          <motion.div variants={fadeUp(0.75)} className="flex justify-center lg:justify-start gap-4 pt-6 text-slatefg-muted dark:text-slatefg-dark/60">
+          {/* Social Links */}
+          <motion.div variants={fadeUp(0.5)} className="flex gap-4 justify-center lg:justify-start pt-4 text-slatefg-muted dark:text-slatefg-dark">
             <a href="https://github.com/TADESE23" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-200" title="GitHub">
               <FaGithub className="w-6 h-6" />
             </a>
@@ -214,17 +222,22 @@ const Home: React.FC = () => {
             
             {/* Profile Avatar Frame */}
             <div className="absolute inset-6 rounded-full overflow-hidden border-2 border-primary/30 z-20 shadow-2xl bg-gradient-to-tr from-slate-100 to-slate-200 dark:from-slatebg-card dark:to-slate-800 flex items-center justify-center">
-              <img
-                src={!imageError ? getImageUrl(profileImage, '/profile.jpg') : '/profile.jpg'}
-                alt="Tadese Mesfin"
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  if (!imageError) {
-                    setImageError(true);
-                    (e.target as HTMLImageElement).src = '/profile.jpg';
-                  }
-                }}
-              />
+              <picture className="w-full h-full">
+                <source srcSet="/profile.webp" type="image/webp" />
+                <img
+                  src={!imageError ? getImageUrl(profileImage, '/profile.jpg') : '/profile.jpg'}
+                  alt="Tadese Mesfin"
+                  className="w-full h-full object-cover"
+                  loading="eager"
+                  decoding="async"
+                  onError={() => {
+                    if (!imageError) {
+                      setImageError(true);
+                      setProfileImage('/profile.jpg');
+                    }
+                  }}
+                />
+              </picture>
             </div>
           </motion.div>
         </motion.div>

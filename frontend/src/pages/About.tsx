@@ -108,12 +108,17 @@ const About: React.FC = () => {
             className="lg:col-span-7 glass-panel p-8 rounded-3xl shadow-sm space-y-6 flex flex-col md:flex-row gap-6 items-start"
           >
             <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl overflow-hidden border-2 border-primary/30 shadow-lg flex-shrink-0 bg-slate-100 dark:bg-slate-800">
-              <img
-                src={getImageUrl(localProfile.profile_image_url || localProfile.profile_image, '/profile.jpg')}
-                alt={localProfile.name}
-                className="w-full h-full object-cover"
-                onError={(e) => { (e.target as HTMLImageElement).src = '/profile.jpg'; }}
-              />
+              <picture className="w-full h-full">
+                <source srcSet="/profile.webp" type="image/webp" />
+                <img
+                  src={getImageUrl(localProfile.profile_image_url || localProfile.profile_image, '/profile.jpg')}
+                  alt={localProfile.name}
+                  className="w-full h-full object-cover"
+                  loading="eager"
+                  decoding="async"
+                  onError={(e) => { (e.target as HTMLImageElement).src = '/profile.jpg'; }}
+                />
+              </picture>
             </div>
             <div className="space-y-3 flex-1">
               <h3 className="text-2xl font-bold text-slate-800 dark:text-white">Professional Journey</h3>
